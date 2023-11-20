@@ -10,16 +10,17 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="637.0" prefWidth="935.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.sistemaingressos.telas.SelecionarSessaoController">
    <children>
-      <Label layoutX="353.0" layoutY="51.0" text="Lista de Sessoes">
+      <Label layoutX="41.0" layoutY="69.0" text="Lista de Sessoes">
          <font>
             <Font size="35.0" />
          </font>
       </Label>
-      <TableView layoutX="42.0" layoutY="215.0" prefHeight="382.0" prefWidth="723.0">
+      <TableView fx:id="tabelaSessoes" layoutX="42.0" layoutY="215.0" prefHeight="382.0" prefWidth="723.0">
         <columns>
-          <TableColumn prefWidth="281.5999870300293" text="Nome" />
-          <TableColumn prefWidth="126.39999389648438" text="Classificação" />
-            <TableColumn prefWidth="315.20001220703125" text="Sessao" />
+          <TableColumn fx:id="nomeTabelaSessoes" prefWidth="72.0" text="Nome" />
+          <TableColumn fx:id="classificacaoTabelaSessoes" prefWidth="168.0" text="Classificação" />
+            <TableColumn fx:id="horarioTabelaSessoes" minWidth="0.0" prefWidth="199.0" text="Sessao" />
+            <TableColumn fx:id="precoTabelaSessoes" prefWidth="75.0" text="Preço" />
         </columns>
       </TableView>
       <Button fx:id="comprarIngressos" layoutX="794.0" layoutY="555.0" mnemonicParsing="false" onAction="#comprarIngressos" text="Comprar">
@@ -27,19 +28,19 @@
             <Font size="20.0" />
          </font>
       </Button>
-      <Label layoutX="24.0" layoutY="26.0" prefHeight="36.0" prefWidth="166.0" text="Logado como:">
+      <Label layoutX="597.0" layoutY="26.0" prefHeight="36.0" prefWidth="180.0" text="Logado como:">
          <font>
-            <Font size="25.0" />
+            <Font size="20.0" />
          </font>
       </Label>
-      <Button fx:id="editarDadosCliente" layoutX="24.0" layoutY="61.0" mnemonicParsing="false" onAction="#editarDadosCliente" text="Editar dados">
+      <Button fx:id="editarDadosCliente" layoutX="597.0" layoutY="69.0" mnemonicParsing="false" onAction="#editarDadosCliente" text="Editar dados">
          <font>
             <Font size="15.0" />
          </font>
       </Button>
-      <Label fx:id="logadoNome" layoutX="190.0" layoutY="26.0" prefHeight="19.0" prefWidth="287.0" text="...">
+      <Label fx:id="logadoNome" layoutX="746.0" layoutY="32.0" prefHeight="25.0" prefWidth="174.0" text="...">
          <font>
-            <Font size="25.0" />
+            <Font size="20.0" />
          </font>
       </Label>
       <Label layoutX="41.0" layoutY="139.0" text="Pesquisar:">
@@ -47,6 +48,7 @@
             <Font size="30.0" />
          </font>
       </Label>
-      <TextField layoutX="190.0" layoutY="149.0" prefHeight="36.0" prefWidth="174.0" />
+      <TextField layoutX="201.0" layoutY="142.0" prefHeight="36.0" prefWidth="174.0" />
+      <Label fx:id="selectTeste" layoutX="777.0" layoutY="365.0" text="Selecionado:" />
    </children>
 </AnchorPane>
