@@ -1,5 +1,7 @@
 package com.example.sistemaingressos.telas;
 
+import com.example.sistemaingressos.models.FilmeModel;
+import com.example.sistemaingressos.models.SessaoModel;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -7,10 +9,12 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 public class MainController {
     @FXML
-    protected void logarCliente(ActionEvent event) {
+    protected void logarCliente(ActionEvent event) throws SQLException {
+        FilmeModel.carregarFilmes();
         Parent root = null;
         try {
             root = FXMLLoader.load(getClass().getResource("DadosClienteTela.fxml"));

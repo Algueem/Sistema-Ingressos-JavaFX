@@ -1,8 +1,6 @@
 package com.example.sistemaingressos.telas;
 
 import com.example.sistemaingressos.models.SessaoModel;
-import javafx.beans.Observable;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -14,6 +12,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 import static com.example.sistemaingressos.telas.DadosClienteController.*;
 import static com.example.sistemaingressos.models.SessaoModel.*;
@@ -27,10 +26,12 @@ public class SelecionarSessaoController {
     TableColumn nomeTabelaSessoes, classificacaoTabelaSessoes, horarioTabelaSessoes, precoTabelaSessoes;
 
     @FXML Label logadoNome;
-    public void initialize(){
+    public void initialize() throws SQLException {
         SessaoModel.carregarSessoes();
         tabelaSessoes.setItems(sessoes);
-        nomeTabelaSessoes.setCellValueFactory(new PropertyValueFactory<String, SessaoModel>("filme"));
+        nomeTabelaSessoes.setCellValueFactory(new PropertyValueFactory<String, SessaoModel>("filmeNome"));
+        classificacaoTabelaSessoes.setCellValueFactory(new PropertyValueFactory<Integer, SessaoModel>("faixaEtaria"));
+        horarioTabelaSessoes.setCellValueFactory(new PropertyValueFactory<String, SessaoModel>("horario"));
         precoTabelaSessoes.setCellValueFactory(new PropertyValueFactory<Double, SessaoModel>("preco"));
         logadoNome.setText(cliente.getNome());
         // mostrar filmes tabela
@@ -52,7 +53,7 @@ public class SelecionarSessaoController {
     public void comprarIngressos(ActionEvent event) {
         SessaoModel a = (SessaoModel) tabelaSessoes.getSelectionModel().getSelectedItem();
         if (a != null) {
-            selectTeste.setText(a.getFilme());
+            selectTeste.setText(a.getFilme().getNome());
         } else {
             selectTeste.setText("Selecione primeiro");
         }
