@@ -14,7 +14,6 @@ import java.sql.SQLException;
 public class MainController {
     @FXML
     protected void logarCliente(ActionEvent event) throws SQLException {
-        FilmeModel.carregarFilmes();
         Parent root = null;
         try {
             root = FXMLLoader.load(getClass().getResource("DadosClienteTela.fxml"));
@@ -26,5 +25,13 @@ public class MainController {
     }
     @FXML
     protected void logarAdmin(ActionEvent event) {
+        Parent root = null;
+        try {
+            root = FXMLLoader.load(getClass().getResource("AdminTela.fxml"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        Scene scene = ((javafx.scene.Node) event.getSource()).getScene();
+        scene.setRoot(root);
     }
 }

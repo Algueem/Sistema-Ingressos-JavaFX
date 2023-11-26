@@ -1,14 +1,14 @@
 package com.example.sistemaingressos.telas;
 
 import com.example.sistemaingressos.models.SessaoModel;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.io.IOException;
@@ -20,19 +20,35 @@ import static com.example.sistemaingressos.models.SessaoModel.*;
 
 
 public class SelecionarSessaoController {
-    @FXML Label selectTeste;
+    @FXML Label selectTeste; // tirar
+
+    @FXML
+    ChoiceBox<String> selectFiltro;
+
+    @FXML TextField barraPesquisa;
+
     @FXML TableView tabelaSessoes;
     @FXML
-    TableColumn nomeTabelaSessoes, classificacaoTabelaSessoes, horarioTabelaSessoes, precoTabelaSessoes;
+    TableColumn nomeTabelaSessoes, classificacaoTabelaSessoes, generoTabelaSessoes, horarioTabelaSessoes, precoTabelaSessoes;
 
     @FXML Label logadoNome;
-    public void initialize() throws SQLException {
-        SessaoModel.carregarSessoes();
-        tabelaSessoes.setItems(sessoes);
-        nomeTabelaSessoes.setCellValueFactory(new PropertyValueFactory<String, SessaoModel>("filmeNome"));
-        classificacaoTabelaSessoes.setCellValueFactory(new PropertyValueFactory<Integer, SessaoModel>("faixaEtaria"));
-        horarioTabelaSessoes.setCellValueFactory(new PropertyValueFactory<String, SessaoModel>("horario"));
-        precoTabelaSessoes.setCellValueFactory(new PropertyValueFactory<Double, SessaoModel>("preco"));
+
+    ObservableList<SessaoModel> sessoesLista = FXCollections.observableArrayList();
+    public void initialize() {
+        String[] selectOpcoes = {"Nome", "Classificação", "Gênero"};
+        selectFiltro.getItems().addAll(selectOpcoes);
+        selectFiltro.setValue("Nome");
+        selectFiltro.setOnAction(ActionEvent-> {
+            buscar();
+        });
+
+        sessoesLista.addAll(sessoes);
+        tabelaSessoes.setItems(sessoesLista);
+        nomeTabelaSessoes.setCellValueFactory(new PropertyValueFactory<String, SessaoModel>("nome"));
+        generoTabelaSessoes.setCellValueFactory(new PropertyValueFactory<String, SessaoModel>("genero"));
+        classificacaoTabelaSessoes.setCellValueFactory(new PropertyValueFactory<String, SessaoModel>("faixaEtaria"));
+        horarioTabelaSessoes.setCellValueFactory(new PropertyValueFactory<String, SessaoModel>("sessao"));
+        precoTabelaSessoes.setCellValueFactory(new PropertyValueFactory<Double, SessaoModel>("custo"));
         logadoNome.setText(cliente.getNome());
         // mostrar filmes tabela
 
@@ -53,10 +69,50 @@ public class SelecionarSessaoController {
     public void comprarIngressos(ActionEvent event) {
         SessaoModel a = (SessaoModel) tabelaSessoes.getSelectionModel().getSelectedItem();
         if (a != null) {
-            selectTeste.setText(a.getFilme().getNome());
+            if (cliente.getIdade() < a.getFilme().getFaixaEtaria()) {
+                selectTeste.setText("Não podoe");
+            } else {
+                selectTeste.setText(a.getFilme().getNome());
+            }
         } else {
             selectTeste.setText("Selecione primeiro");
         }
 
     }
+
+    @FXML
+    public void buscar() {
+        sessoesLista.clear();
+        switch (selectFiltro.getValue()) {
+            case "Nome":
+                for (SessaoModel s: sessoes) {
+                    if (s.getNome().contains(barraPesquisa.getText())) {
+                        sessoesLista.add(s);
+                    }
+                }
+                break;
+            case "Classificação":
+                for (SessaoModel s: sessoes) {
+                    String idadeText = barraPesquisa.getText();
+                    try {
+                        int idade = Integer.parseInt(idadeText);
+                        if (s.getFilme().getFaixaEtaria() <= idade) {
+                            sessoesLista.add(s);
+                        }
+                    } catch (NumberFormatException ignored) {
+
+                    }
+                }
+                break;
+            case "Gênero":
+                for (SessaoModel s: sessoes) {
+                    if (s.getGenero().contains(barraPesquisa.getText())) {
+                        sessoesLista.add(s);
+                    }
+                }
+                break;
+        }
+    }
+
+
 }

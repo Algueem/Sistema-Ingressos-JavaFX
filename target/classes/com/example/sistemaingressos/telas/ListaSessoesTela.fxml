@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
@@ -10,17 +11,18 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="637.0" prefWidth="935.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.sistemaingressos.telas.SelecionarSessaoController">
    <children>
-      <Label layoutX="41.0" layoutY="69.0" text="Lista de Sessoes">
+      <Label layoutX="41.0" layoutY="69.0" text="Lista de Sessões">
          <font>
             <Font size="35.0" />
          </font>
       </Label>
-      <TableView fx:id="tabelaSessoes" layoutX="42.0" layoutY="215.0" prefHeight="382.0" prefWidth="723.0">
+      <TableView fx:id="tabelaSessoes" layoutX="42.0" layoutY="215.0" prefHeight="382.0" prefWidth="576.0">
         <columns>
           <TableColumn fx:id="nomeTabelaSessoes" prefWidth="72.0" text="Nome" />
-          <TableColumn fx:id="classificacaoTabelaSessoes" prefWidth="168.0" text="Classificação" />
-            <TableColumn fx:id="horarioTabelaSessoes" minWidth="0.0" prefWidth="199.0" text="Sessao" />
-            <TableColumn fx:id="precoTabelaSessoes" prefWidth="75.0" text="Preço" />
+          <TableColumn fx:id="classificacaoTabelaSessoes" prefWidth="89.59994506835938" text="Classificação" />
+            <TableColumn fx:id="generoTabelaSessoes" minWidth="0.0" prefWidth="117.59999084472656" text="Gênero" />
+            <TableColumn fx:id="horarioTabelaSessoes" minWidth="0.0" prefWidth="152.0" text="Sessão" />
+            <TableColumn fx:id="precoTabelaSessoes" prefWidth="143.20001220703125" text="Preço" />
         </columns>
       </TableView>
       <Button fx:id="comprarIngressos" layoutX="794.0" layoutY="555.0" mnemonicParsing="false" onAction="#comprarIngressos" text="Comprar">
@@ -48,7 +50,8 @@
             <Font size="30.0" />
          </font>
       </Label>
-      <TextField layoutX="201.0" layoutY="142.0" prefHeight="36.0" prefWidth="174.0" />
+      <TextField fx:id="barraPesquisa" layoutX="201.0" layoutY="142.0" onKeyTyped="#buscar" prefHeight="36.0" prefWidth="174.0" />
       <Label fx:id="selectTeste" layoutX="777.0" layoutY="365.0" text="Selecionado:" />
+      <ChoiceBox fx:id="selectFiltro" layoutX="392.0" layoutY="147.0" prefWidth="150.0" />
    </children>
 </AnchorPane>

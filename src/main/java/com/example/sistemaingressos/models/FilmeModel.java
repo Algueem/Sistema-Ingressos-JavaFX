@@ -1,5 +1,6 @@
 package com.example.sistemaingressos.models;
 
+import com.example.sistemaingressos.database.FilmeDAO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
@@ -23,27 +24,21 @@ public class FilmeModel {
     }
 
     public static void carregarFilmes() throws SQLException {
-        Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/SistemaIngressos", "root", "Admin@123");
-        String sql = "SELECT * FROM FILMES";
-        PreparedStatement st = con.prepareStatement(sql);
-        ResultSet result = st.executeQuery();
-        while (result.next()) {
-            FilmeModel f = new FilmeModel(result.getString("nome"), result.getString("genero"),
-                    result.getInt("duracao"), result.getInt("faixa_etaria"));
-            filmes.put(f.getNome(), f);
-        }
+        FilmeDAO.carregarFilmes();
     }
 
-    public void adicionarFilme(FilmeModel filme) {
-
+    public void addFilme(FilmeModel filme){
+        filmes.put(filme.getNome(), filme);
+        FilmeDAO.adicionarFilme(filme);
     }
 
-    public void editarFilme(FilmeModel filme) {
-
+    public void editarFilme(FilmeModel filme){
+        FilmeDAO.editarFilme(filme);
     }
 
-    public void deletarFilme() {
-
+    public void deletarFilme(FilmeModel filme){
+        filmes.remove(filme.getNome());
+        FilmeDAO.deletarFilme(filme);
     }
 
     public String getNome() {
@@ -76,5 +71,13 @@ public class FilmeModel {
 
     public void setFaixaEtaria(int faixaEtaria) {
         this.faixaEtaria = faixaEtaria;
+    }
+
+    public String getClassificacao() {
+        if (faixaEtaria > 0){
+            return String.format("%d+ anos", faixaEtaria);
+        } else {
+            return "Livre";
+        }
     }
 }
