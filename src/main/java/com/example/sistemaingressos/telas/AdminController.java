@@ -17,6 +17,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.example.sistemaingressos.models.FilmeModel.filmes;
@@ -34,12 +35,13 @@ public class AdminController {
     TableColumn nomeTabelaFilmes, classificacaoTabelaFilmes, generoTabelaFilmes;
     
     ObservableList<FilmeModel> filmesLista = FXCollections.observableArrayList();
-    ObservableList<FilmeModel> sessoesLista = FXCollections.observableArrayList();
+    ObservableList<SessaoModel> sessoesLista = FXCollections.observableArrayList();
     public static SessaoModel sessaoSelecionada = null;
     public static FilmeModel filmeSelecionado = null;
     
     public void initialize() {
-        loadTabelas();
+        filmesLista.setAll(filmes.values());
+        sessoesLista.setAll(sessoes);
         tabelaSessoes.setItems(sessoes); // sessoesLista
         nomeTabelaSessoes.setCellValueFactory(new PropertyValueFactory<String, SessaoModel>("nome"));
         horarioTabelaSessoes.setCellValueFactory(new PropertyValueFactory<String, SessaoModel>("horario"));
@@ -55,11 +57,13 @@ public class AdminController {
     }
 
     public void editarFilme(ActionEvent event) {
-        FilmeModel filme = filmes.get("miranha");
-        filme.setDuracao(100);
-        filme.setGenero("sei la2");
-        loadTabelas();
-        FilmeDAO.editarFilme(filme);
+        FilmeModel filme = (FilmeModel) tabelaFilmes.getSelectionModel().getSelectedItem();
+        if (filme != null) {
+            filme.setDuracao(100);
+            filme.setGenero("sei la2");
+            filmesLista.setAll(filmes.values());
+            FilmeDAO.editarFilme(filme);
+        }
     }
 
     public void removerFilme(ActionEvent event) {
@@ -101,12 +105,5 @@ public class AdminController {
             sessoes.remove(sessao);
             SessaoDAO.deletarSessao(sessao);
         }
-    }
-    
-    public void loadTabelas() {
-        filmesLista.clear();
-        filmesLista.addAll(filmes.values());
-        //sessoesLista.clear();
-        //sessoesLista.addAll(sessoes);
     }
 }

@@ -4,6 +4,7 @@ import com.example.sistemaingressos.models.FilmeModel;
 import com.example.sistemaingressos.models.SessaoModel;
 
 import java.sql.*;
+import java.util.ArrayList;
 
 import static com.example.sistemaingressos.models.FilmeModel.filmes;
 import static com.example.sistemaingressos.models.SessaoModel.sessoes;
@@ -48,7 +49,8 @@ public class SessaoDAO {
 
     public static void editarSessao(SessaoModel novaSessao){
         try {
-            String sql = "UPDATE filmes SET filme = ?, horario = ?, preco = ?, qnt_max_pessoas = ? where id = ? ";
+            System.out.println("update " + novaSessao.getId());
+            String sql = "UPDATE sessoes SET filme = ?, horario = ?, preco = ?, qnt_max_pessoas = ? WHERE id = ? ";
 
             Connection con = Conexao.getConexao();
             PreparedStatement ps = con.prepareStatement(sql);
@@ -56,11 +58,12 @@ public class SessaoDAO {
             ps.setInt(2, novaSessao.getHorario());
             ps.setDouble(3, novaSessao.getPreco());
             ps.setInt(4, novaSessao.getQuantMaxPessoas());
-            ps.setString(5, novaSessao.getId());
+            ps.setString(5, novaSessao.getNome() + "|" + novaSessao.getHorario());
 
             ps.executeUpdate();
             ps.close();
-        } catch (SQLException ignored) {
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
@@ -78,6 +81,37 @@ public class SessaoDAO {
 
         }
 
+    }
+
+    public static boolean existeSessaoPorId(String id) {
+        try {
+            Connection con = Conexao.getConexao();
+            String sql = "SELECT * FROM sessoes WHERE id = ?";
+            PreparedStatement st = con.prepareStatement(sql);
+            st.setString(1, id);
+            ResultSet result = st.executeQuery();
+            return result.next();
+        } catch (SQLException ignored) {
+            return false;
+        }
+    }
+
+    public static ArrayList<Integer> buscarHorariosDisponiveis(String filme) {
+        ArrayList<Integer> horarios = new ArrayList<>();
+        try {
+            Connection con = Conexao.getConexao();
+            String sql = "SELECT * FROM sessoes WHERE filme = ?";
+            PreparedStatement st = con.prepareStatement(sql);
+            st.setString(1, filme);
+            ResultSet result = st.executeQuery();
+
+            while (result.next()) {
+                horarios.add(result.getInt("horario"));
+            }
+            return horarios;
+        } catch (SQLException ignored) {
+            return horarios;
+        }
     }
 
 }
