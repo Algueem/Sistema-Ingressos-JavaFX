@@ -2,27 +2,31 @@ package com.example.sistemaingressos.models;
 
 import com.example.sistemaingressos.database.Conexao;
 import com.example.sistemaingressos.database.SessaoDAO;
+import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.sql.*;
+import java.time.LocalDateTime;
 
 import static com.example.sistemaingressos.models.FilmeModel.filmes;
 
 public class SessaoModel {
     public static ObservableList<SessaoModel> sessoes = FXCollections.observableArrayList();
-    private String id; // "Homem aranha|14; "Homem aranha|16;
-    private int horario; // ;
-    private double preco;
-    private int quantMaxPessoas;
+    private int id;
     private FilmeModel filme;
+    private int hora;
+    private int minuto;
+    private int salaId;
+    private double preco;
 
-    public SessaoModel(int horario, double preco, int quantMaxPessoas, FilmeModel filme) {
-        this.id = filme.getNome() + "|" + horario;
-        this.horario = horario;
-        this.preco = preco;
-        this.quantMaxPessoas = quantMaxPessoas;
+    public SessaoModel(int id, FilmeModel filme, int hora, int minuto, int salaId, double preco) {
+        this.id = id;
         this.filme = filme;
+        this.hora = hora;
+        this.minuto = minuto;
+        this.salaId = salaId;
+        this.preco = preco;
     }
 
     public static void carregarSessoes() {
@@ -43,36 +47,12 @@ public class SessaoModel {
         sessoes.remove(sessao);
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
-    }
-
-    public int getHorario() {
-        return horario;
-    }
-
-    public void setHorario(int horario) {
-        this.horario = horario;
-    }
-
-    public double getPreco() {
-        return preco;
-    }
-
-    public void setPreco(double preco) {
-        this.preco = preco;
-    }
-
-    public int getQuantMaxPessoas() {
-        return quantMaxPessoas;
-    }
-
-    public void setQuantMaxPessoas(int quantMaxPessoas) {
-        this.quantMaxPessoas = quantMaxPessoas;
     }
 
     public FilmeModel getFilme() {
@@ -83,25 +63,51 @@ public class SessaoModel {
         this.filme = filme;
     }
 
-    public String getNome() {
-        return this.filme.getNome();
+    public int getHora() {
+        return hora;
     }
 
-    public String getGenero() {
-        return this.filme.getGenero();
+    public void setHora(int hora) {
+        this.hora = hora;
     }
-    public String getFaixaEtaria() {
-        int faixaEtaria = this.filme.getFaixaEtaria();
-        if (faixaEtaria > 0){
-            return String.format("%d+ anos", this.filme.getFaixaEtaria());
-        } else {
-            return "Livre";
-        }
+
+    public int getMinuto() {
+        return minuto;
     }
-    public String getSessao() {
-        return String.format("%d horas", this.horario);
+
+    public void setMinuto(int minuto) {
+        this.minuto = minuto;
     }
-    public String getCusto(){
-        return String.format("%.2f R$", this.preco);
+
+    public int getSalaId() {
+        return salaId;
+    }
+
+    public void setSalaId(int salaId) {
+        this.salaId = salaId;
+    }
+
+    public double getPreco() {
+        return preco;
+    }
+
+    public void setPreco(double preco) {
+        this.preco = preco;
+    }
+
+    public ReadOnlyStringWrapper get(String attr) {
+        String str = getStr(attr);
+        return new ReadOnlyStringWrapper(str);
+    }
+
+    public String getStr(String attr) {
+        return switch (attr) {
+            case "filme" -> this.filme.getNome();
+            case "genero" -> this.filme.getGenero();
+            case "classificacao" -> this.filme.getFaixaEtaria() + "+ anos";
+            case "horario" -> this.hora + "h" + this.minuto + "min";
+            case "preco" -> this.preco + " R$";
+            default -> "";
+        };
     }
 }

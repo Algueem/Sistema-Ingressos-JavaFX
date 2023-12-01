@@ -18,8 +18,9 @@ public class SessaoDAO {
             ResultSet result = st.executeQuery();
             while (result.next()) {
                 FilmeModel f = filmes.get(result.getString("filme"));
-                SessaoModel sessao = new SessaoModel(result.getInt("horario"), result.getDouble("preco"),
-                        result.getInt("qnt_max_pessoas"), f);
+                SessaoModel sessao = new SessaoModel(result.getInt("id"), f, result.getInt("hora"),
+                        result.getInt("minuto"), result.getInt("sala_id"),
+                        result.getDouble("preco"));
                 sessoes.add(sessao);
             }
         } catch (SQLException ignored) {
@@ -30,15 +31,15 @@ public class SessaoDAO {
     public static void adicionarSessao(SessaoModel sessao){
         //nome, genero, duracao, faxa_estaria
         try {
-            String sql = "INSERT INTO sessoes values (?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO sessoes (filme, hora, minuto, sala_id, preco) values (?, ?, ?, ?, ?)";
 
             Connection con = Conexao.getConexao();
             PreparedStatement ps = con.prepareStatement(sql);
-            ps.setString(1, sessao.getId());
-            ps.setString(2, sessao.getNome());
-            ps.setInt(3, sessao.getHorario());
-            ps.setDouble(4, sessao.getPreco());
-            ps.setInt(5, sessao.getQuantMaxPessoas());
+            ps.setString(1, sessao.getStr("filme"));
+            ps.setInt(2, sessao.getHora());
+            ps.setInt(3, sessao.getMinuto());
+            ps.setInt(4, sessao.getSalaId());
+            ps.setDouble(5, sessao.getPreco());
 
             ps.executeUpdate();
             ps.close();
@@ -50,15 +51,16 @@ public class SessaoDAO {
     public static void editarSessao(SessaoModel novaSessao){
         try {
             System.out.println("update " + novaSessao.getId());
-            String sql = "UPDATE sessoes SET filme = ?, horario = ?, preco = ?, qnt_max_pessoas = ? WHERE id = ? ";
+            String sql = "UPDATE sessoes SET filme = ?, hora = ?, minuto = ?, sala_id = ?, preco = ? WHERE id = ? ";
 
             Connection con = Conexao.getConexao();
             PreparedStatement ps = con.prepareStatement(sql);
-            ps.setString(1, novaSessao.getNome());
-            ps.setInt(2, novaSessao.getHorario());
-            ps.setDouble(3, novaSessao.getPreco());
-            ps.setInt(4, novaSessao.getQuantMaxPessoas());
-            ps.setString(5, novaSessao.getNome() + "|" + novaSessao.getHorario());
+            ps.setString(1, novaSessao.getStr("filme"));
+            ps.setInt(2, novaSessao.getHora());
+            ps.setInt(3, novaSessao.getMinuto());
+            ps.setInt(4, novaSessao.getSalaId());
+            ps.setDouble(5, novaSessao.getPreco());
+            ps.setInt(6, novaSessao.getId());
 
             ps.executeUpdate();
             ps.close();
@@ -73,7 +75,7 @@ public class SessaoDAO {
 
             Connection con = Conexao.getConexao();
             PreparedStatement ps = con.prepareStatement(sql);
-            ps.setString(1, deletarSessao.getId());
+            ps.setInt(1, deletarSessao.getId());
 
             ps.execute();
             ps.close();
@@ -81,37 +83,6 @@ public class SessaoDAO {
 
         }
 
-    }
-
-    public static boolean existeSessaoPorId(String id) {
-        try {
-            Connection con = Conexao.getConexao();
-            String sql = "SELECT * FROM sessoes WHERE id = ?";
-            PreparedStatement st = con.prepareStatement(sql);
-            st.setString(1, id);
-            ResultSet result = st.executeQuery();
-            return result.next();
-        } catch (SQLException ignored) {
-            return false;
-        }
-    }
-
-    public static ArrayList<Integer> buscarHorariosDisponiveis(String filme) {
-        ArrayList<Integer> horarios = new ArrayList<>();
-        try {
-            Connection con = Conexao.getConexao();
-            String sql = "SELECT * FROM sessoes WHERE filme = ?";
-            PreparedStatement st = con.prepareStatement(sql);
-            st.setString(1, filme);
-            ResultSet result = st.executeQuery();
-
-            while (result.next()) {
-                horarios.add(result.getInt("horario"));
-            }
-            return horarios;
-        } catch (SQLException ignored) {
-            return horarios;
-        }
     }
 
 }

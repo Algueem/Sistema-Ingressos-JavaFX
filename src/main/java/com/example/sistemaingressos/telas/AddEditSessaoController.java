@@ -23,62 +23,60 @@ import static com.example.sistemaingressos.telas.AdminController.sessaoSeleciona
 
 public class AddEditSessaoController {
     @FXML
-    ChoiceBox<String> selectFilme, selectHorario;
+    ChoiceBox<String> selectFilme, selectHora, selectMinuto, selectSala;
     @FXML
     TextField capacidadeInput, precoInput;
     @FXML Label errorMsg;
 
     public void initialize() {
         selectFilme.getItems().addAll(filmes.keySet());
-        selectFilme.setOnAction(ActionEvent -> addHorarios());
-
+        addHorarios();
 
         if (sessaoSelecionada != null) {
-            selectFilme.setValue(String.valueOf(sessaoSelecionada.getNome()));
-            selectHorario.setValue(sessaoSelecionada.getHorario() + " horas");
-            capacidadeInput.setText(String.valueOf(sessaoSelecionada.getQuantMaxPessoas()));
+            selectFilme.setValue(sessaoSelecionada.getStr("filme"));
+            selectHora.setValue(sessaoSelecionada.getHora() + " h");
+            selectMinuto.setValue(sessaoSelecionada.getMinuto() + " min");
             precoInput.setText(String.valueOf(sessaoSelecionada.getPreco()));
         }
     }
     @FXML
-    public void salvarSessao(ActionEvent event) throws InterruptedException {
+    public void salvarSessao(ActionEvent event) {
         try {
             if (selectFilme.getValue() == null) {
                 errorMsg.setText("Selecione o filme!");
                 return;
             }
-            int horario = Integer.parseInt(selectHorario.getValue().split(" ",0)[0]);
-            int capacidade = Integer.parseInt(capacidadeInput.getText());
+            int hora = Integer.parseInt(selectHora.getValue().split(" ",0)[0]);
+            int minuto = Integer.parseInt(selectMinuto.getValue().split(" ",0)[0]);
+            int salaId = Integer.parseInt(selectSala.getValue());
             double preco = Double.parseDouble(precoInput.getText());
             FilmeModel filme = filmes.get(selectFilme.getValue());
             if (sessaoSelecionada == null) {
-                SessaoModel sessao = new SessaoModel(horario, preco, capacidade, filme);
+                SessaoModel sessao = new SessaoModel(-1, filme, hora, minuto, salaId, preco);
                 SessaoModel.addSessao(sessao);
             } else {
-                String newId = selectFilme.getValue() + "|" + horario;
-                if (SessaoDAO.existeSessaoPorId(newId)) {
+                if (true) {// arrumar
                     errorMsg.setText("Ja existe outra sessao desse filme nesse horario");
                 } else {
                     sessaoSelecionada.setFilme(filmes.get(selectFilme.getValue()));
-                    sessaoSelecionada.setHorario(horario);
+                    sessaoSelecionada.setHora(hora);
+                    sessaoSelecionada.setMinuto(minuto);
+                    sessaoSelecionada.setSalaId(salaId);
                     sessaoSelecionada.setPreco(preco);
-                    sessaoSelecionada.setQuantMaxPessoas(capacidade);
-                    SessaoDAO.editarSessao(sessaoSelecionada);
-                    sessaoSelecionada.setId(newId);
+                    SessaoModel.editarSessao(sessaoSelecionada);
                     sessaoSelecionada = null;
-                    Parent root = null;
-                    try {
-                        root = FXMLLoader.load(getClass().getResource("AdminTela.fxml"));
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-                    Scene scene = ((javafx.scene.Node) event.getSource()).getScene();
-                    scene.setRoot(root);
                 }
             }
+            Parent root = null;
+            try {
+                root = FXMLLoader.load(getClass().getResource("AdminTela.fxml"));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            Scene scene = ((javafx.scene.Node) event.getSource()).getScene();
+            scene.setRoot(root);
 
         } catch (NumberFormatException ignored) {
-            System.out.println("opa");
             errorMsg.setText("Preencha com numeros");
             //Thread.sleep(2000);
             //errorMsg.setText(" ");
@@ -86,16 +84,13 @@ public class AddEditSessaoController {
     }
 
     public void addHorarios() {
-        String selecionado = selectFilme.getValue();
-        selectHorario.getItems().clear();
-        ArrayList<Integer> horariosUsados = SessaoDAO.buscarHorariosDisponiveis(selecionado);
-        String[] horarios = new String[24];
-        for (int i = 0; i < 24; i++) {
-            horarios[i] = i + " horas";
+        String[] horas = new String[24];
+        String[] minutos = new String[60];
+        for (int i = 0; i < 60; i++) {
+            minutos[i] = i + " min";
+            if (i < 24) horas[i] = i + " h";
         }
-        selectHorario.getItems().addAll(horarios);
-        for (int i: horariosUsados) {
-            selectHorario.getItems().remove(i + " horas");
-        }
+        selectHora.getItems().addAll(horas);
+        selectMinuto.getItems().addAll(minutos);
     }
 }

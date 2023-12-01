@@ -10,9 +10,9 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="637.0" prefWidth="935.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.sistemaingressos.telas.AdminController">
    <children>
-      <Button fx:id="adicionarFilme" layoutX="47.0" layoutY="280.0" mnemonicParsing="false" onAction="#adicionarFilme" text="Adicionar Filme" />
-      <Button fx:id="editarFilme" layoutX="160.0" layoutY="280.0" mnemonicParsing="false" onAction="#editarFilme" text="Editar Filme" />
-      <Button fx:id="removerFilme" layoutX="251.0" layoutY="280.0" mnemonicParsing="false" onAction="#removerFilme" text="Remover Filme" />
+      <Button fx:id="adicionarFilme" layoutX="42.0" layoutY="280.0" mnemonicParsing="false" onAction="#adicionarFilme" text="Adicionar Filme" />
+      <Button fx:id="editarFilme" layoutX="155.0" layoutY="280.0" mnemonicParsing="false" onAction="#editarFilme" text="Editar Filme" />
+      <Button fx:id="removerFilme" layoutX="247.0" layoutY="280.0" mnemonicParsing="false" onAction="#removerFilme" text="Remover Filme" />
       <TableView fx:id="topVendasTabela" layoutX="702.0" layoutY="65.0" prefHeight="200.0" prefWidth="200.0">
         <columns>
           <TableColumn prefWidth="75.0" text="#" />
@@ -32,12 +32,13 @@
       </TableView>
       <Label layoutX="696.0" layoutY="349.0" text="Dia" />
       <DatePicker layoutX="726.0" layoutY="345.0" />
-      <Button fx:id="adicionarSessao" layoutX="54.0" layoutY="575.0" mnemonicParsing="false" onAction="#adicionarSessao" text="Adicionar Sessão" />
-      <TableView fx:id="tabelaFilmes" layoutX="52.0" layoutY="65.0" prefHeight="200.0" prefWidth="462.0">
+      <Button fx:id="adicionarSessao" layoutX="41.0" layoutY="575.0" mnemonicParsing="false" onAction="#adicionarSessao" text="Adicionar Sessão" />
+      <TableView fx:id="tabelaFilmes" layoutX="43.0" layoutY="65.0" prefHeight="200.0" prefWidth="462.0">
         <columns>
-          <TableColumn fx:id="nomeTabelaFilmes" prefWidth="75.0" text="Nome" />
-          <TableColumn fx:id="classificacaoTabelaFilmes" prefWidth="152.0000457763672" text="Classificação" />
-            <TableColumn fx:id="generoTabelaFilmes" prefWidth="233.60001220703123" text="Gênero" />
+          <TableColumn fx:id="nomeTabelaFilmes" prefWidth="128.79998397827148" text="Nome" />
+          <TableColumn fx:id="classificacaoTabelaFilmes" prefWidth="99.19999694824219" text="Classificação" />
+            <TableColumn fx:id="generoTabelaFilmes" prefWidth="140.79998779296875" text="Gênero" />
+            <TableColumn fx:id="duracaoTabelaFilmes" prefWidth="93.60003662109375" text="Duração" />
         </columns>
       </TableView>
       <Label layoutX="47.0" layoutY="25.0" text="Lista de Filmes">
@@ -45,15 +46,15 @@
             <Font size="19.0" />
          </font>
       </Label>
-      <TableView fx:id="tabelaSessoes" layoutX="54.0" layoutY="367.0" prefHeight="200.0" prefWidth="316.0">
+      <TableView fx:id="tabelaSessoes" layoutX="41.0" layoutY="367.0" prefHeight="200.0" prefWidth="316.0">
          <columns>
             <TableColumn fx:id="nomeTabelaSessoes" prefWidth="152.79998397827148" text="Filme" />
             <TableColumn fx:id="horarioTabelaSessoes" prefWidth="162.40000915527344" text="Horario" />
          </columns>
       </TableView>
-      <Button fx:id="editarSessao" layoutX="165.0" layoutY="575.0" mnemonicParsing="false" onAction="#editarSessao" text="Editar Sessão" />
-      <Button fx:id="deletarSessao" layoutX="258.0" layoutY="575.0" mnemonicParsing="false" onAction="#deletarSessao" text="Deletar Sessão" />
-      <Label layoutX="54.0" layoutY="319.0" text="Lista de Sessões">
+      <Button fx:id="editarSessao" layoutX="156.0" layoutY="575.0" mnemonicParsing="false" onAction="#editarSessao" text="Editar Sessão" />
+      <Button fx:id="deletarSessao" layoutX="252.0" layoutY="575.0" mnemonicParsing="false" onAction="#deletarSessao" text="Deletar Sessão" />
+      <Label layoutX="47.0" layoutY="319.0" text="Lista de Sessões">
          <font>
             <Font size="19.0" />
          </font>

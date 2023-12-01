@@ -1,6 +1,7 @@
 package com.example.sistemaingressos.telas;
 
 import com.example.sistemaingressos.models.SessaoModel;
+import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -27,9 +28,9 @@ public class SelecionarSessaoController {
 
     @FXML TextField barraPesquisa;
 
-    @FXML TableView tabelaSessoes;
+    @FXML TableView<SessaoModel> tabelaSessoes;
     @FXML
-    TableColumn nomeTabelaSessoes, classificacaoTabelaSessoes, generoTabelaSessoes, horarioTabelaSessoes, precoTabelaSessoes;
+    TableColumn<SessaoModel, String> nomeTabelaSessoes, classificacaoTabelaSessoes, generoTabelaSessoes, horarioTabelaSessoes, precoTabelaSessoes;
 
     @FXML Label logadoNome;
 
@@ -44,11 +45,11 @@ public class SelecionarSessaoController {
 
         sessoesLista.addAll(sessoes);
         tabelaSessoes.setItems(sessoesLista);
-        nomeTabelaSessoes.setCellValueFactory(new PropertyValueFactory<String, SessaoModel>("nome"));
-        generoTabelaSessoes.setCellValueFactory(new PropertyValueFactory<String, SessaoModel>("genero"));
-        classificacaoTabelaSessoes.setCellValueFactory(new PropertyValueFactory<String, SessaoModel>("faixaEtaria"));
-        horarioTabelaSessoes.setCellValueFactory(new PropertyValueFactory<String, SessaoModel>("sessao"));
-        precoTabelaSessoes.setCellValueFactory(new PropertyValueFactory<Double, SessaoModel>("custo"));
+        nomeTabelaSessoes.setCellValueFactory(data -> data.getValue().get("nome"));
+        generoTabelaSessoes.setCellValueFactory(data -> data.getValue().get("genero"));
+        classificacaoTabelaSessoes.setCellValueFactory(data -> data.getValue().get("classificacao"));
+        horarioTabelaSessoes.setCellValueFactory(data -> data.getValue().get("horario"));
+        precoTabelaSessoes.setCellValueFactory(data -> data.getValue().get("preco"));
         logadoNome.setText(cliente.getNome());
         // mostrar filmes tabela
 
@@ -86,7 +87,7 @@ public class SelecionarSessaoController {
         switch (selectFiltro.getValue()) {
             case "Nome":
                 for (SessaoModel s: sessoes) {
-                    if (s.getNome().contains(barraPesquisa.getText())) {
+                    if (s.getStr("filme").contains(barraPesquisa.getText())) {
                         sessoesLista.add(s);
                     }
                 }
@@ -106,7 +107,7 @@ public class SelecionarSessaoController {
                 break;
             case "Gênero":
                 for (SessaoModel s: sessoes) {
-                    if (s.getGenero().contains(barraPesquisa.getText())) {
+                    if (s.getStr("genero").contains(barraPesquisa.getText())) {
                         sessoesLista.add(s);
                     }
                 }

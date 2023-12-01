@@ -1,6 +1,7 @@
 package com.example.sistemaingressos.models;
 
 import com.example.sistemaingressos.database.FilmeDAO;
+import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
@@ -8,6 +9,8 @@ import javafx.collections.ObservableMap;
 import java.util.*;
 
 import java.sql.*;
+
+import static com.example.sistemaingressos.telas.AdminController.filmeSelecionado;
 
 public class FilmeModel {
     private String nome;
@@ -27,16 +30,16 @@ public class FilmeModel {
         FilmeDAO.carregarFilmes();
     }
 
-    public void addFilme(FilmeModel filme){
+    public static void addFilme(FilmeModel filme){
         filmes.put(filme.getNome(), filme);
         FilmeDAO.adicionarFilme(filme);
     }
 
-    public void editarFilme(FilmeModel filme){
+    public static void editarFilme(FilmeModel filme){
         FilmeDAO.editarFilme(filme);
     }
 
-    public void deletarFilme(FilmeModel filme){
+    public static void deletarFilme(FilmeModel filme){
         filmes.remove(filme.getNome());
         FilmeDAO.deletarFilme(filme);
     }
@@ -73,11 +76,18 @@ public class FilmeModel {
         this.faixaEtaria = faixaEtaria;
     }
 
-    public String getClassificacao() {
-        if (faixaEtaria > 0){
-            return String.format("%d+ anos", faixaEtaria);
-        } else {
-            return "Livre";
-        }
+    public ReadOnlyStringWrapper get(String attr) {
+        String str = getStr(attr);
+        return new ReadOnlyStringWrapper(str);
+    }
+
+    public String getStr(String attr) {
+        return switch (attr) {
+            case "nome" -> this.nome;
+            case "genero" -> this.genero;
+            case "classificacao" -> this.faixaEtaria == 0 ? "Livre": this.faixaEtaria + "+ anos";
+            case "duracao" -> this.duracao + "min";
+            default -> "";
+        };
     }
 }

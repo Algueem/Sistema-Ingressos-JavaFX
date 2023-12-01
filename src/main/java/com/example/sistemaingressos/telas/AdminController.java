@@ -25,14 +25,14 @@ import static com.example.sistemaingressos.models.SessaoModel.sessoes;
 
 public class AdminController {
     @FXML 
-    TableView tabelaSessoes;
+    TableView<SessaoModel> tabelaSessoes;
     @FXML
-    TableColumn nomeTabelaSessoes, horarioTabelaSessoes;
+    TableColumn<SessaoModel, String> nomeTabelaSessoes, horarioTabelaSessoes;
     
     @FXML
-    TableView tabelaFilmes;
+    TableView<FilmeModel> tabelaFilmes;
     @FXML
-    TableColumn nomeTabelaFilmes, classificacaoTabelaFilmes, generoTabelaFilmes;
+    TableColumn<FilmeModel, String> nomeTabelaFilmes, classificacaoTabelaFilmes, generoTabelaFilmes, duracaoTabelaFilmes;
     
     ObservableList<FilmeModel> filmesLista = FXCollections.observableArrayList();
     ObservableList<SessaoModel> sessoesLista = FXCollections.observableArrayList();
@@ -43,26 +43,39 @@ public class AdminController {
         filmesLista.setAll(filmes.values());
         sessoesLista.setAll(sessoes);
         tabelaSessoes.setItems(sessoes); // sessoesLista
-        nomeTabelaSessoes.setCellValueFactory(new PropertyValueFactory<String, SessaoModel>("nome"));
-        horarioTabelaSessoes.setCellValueFactory(new PropertyValueFactory<String, SessaoModel>("horario"));
+        nomeTabelaSessoes.setCellValueFactory(data -> data.getValue().get("filme"));
+        horarioTabelaSessoes.setCellValueFactory(data -> data.getValue().get("horario"));
         
         tabelaFilmes.setItems(filmesLista);
-        nomeTabelaFilmes.setCellValueFactory(new PropertyValueFactory<String, FilmeModel>("nome"));
-        classificacaoTabelaFilmes.setCellValueFactory(new PropertyValueFactory<String, FilmeModel>("classificacao"));
-        generoTabelaFilmes.setCellValueFactory(new PropertyValueFactory<String, FilmeModel>("genero"));
+        nomeTabelaFilmes.setCellValueFactory(data -> data.getValue().get("nome"));
+        classificacaoTabelaFilmes.setCellValueFactory(data -> data.getValue().get("classificacao"));
+        generoTabelaFilmes.setCellValueFactory(data -> data.getValue().get("genero"));
+        duracaoTabelaFilmes.setCellValueFactory(data -> data.getValue().get("duracao"));
         
     }
     public void adicionarFilme(ActionEvent event) {
-        
+        Parent root = null;
+        try {
+            root = FXMLLoader.load(getClass().getResource("AddEditFilme.fxml"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        Scene scene = ((javafx.scene.Node) event.getSource()).getScene();
+        scene.setRoot(root);
     }
 
     public void editarFilme(ActionEvent event) {
         FilmeModel filme = (FilmeModel) tabelaFilmes.getSelectionModel().getSelectedItem();
         if (filme != null) {
-            filme.setDuracao(100);
-            filme.setGenero("sei la2");
-            filmesLista.setAll(filmes.values());
-            FilmeDAO.editarFilme(filme);
+            filmeSelecionado = filme;
+            Parent root = null;
+            try {
+                root = FXMLLoader.load(getClass().getResource("AddEditFilme.fxml"));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            Scene scene = ((javafx.scene.Node) event.getSource()).getScene();
+            scene.setRoot(root);
         }
     }
 
