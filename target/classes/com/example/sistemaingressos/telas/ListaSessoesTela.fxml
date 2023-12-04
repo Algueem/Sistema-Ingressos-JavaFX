@@ -51,7 +51,6 @@
          </font>
       </Label>
       <TextField fx:id="barraPesquisa" layoutX="201.0" layoutY="142.0" onKeyTyped="#buscar" prefHeight="36.0" prefWidth="174.0" />
-      <Label fx:id="selectTeste" layoutX="777.0" layoutY="365.0" text="Selecionado:" />
       <ChoiceBox fx:id="selectFiltro" layoutX="392.0" layoutY="147.0" prefWidth="150.0" />
    </children>
 </AnchorPane>

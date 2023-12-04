@@ -7,21 +7,17 @@ import com.example.sistemaingressos.models.FilmeModel;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 
 import java.io.IOException;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class AddEditFilmeController {
     @FXML
     private ChoiceBox<String> classificacaoSelect;
     @FXML
     private TextField nomeFilme, generoFilme, duracaoFilme;
-    @FXML
-    private Label errorMsg;
 
     public void initialize() {
         classificacaoSelect.getItems().addAll("Livre", "10+ anos", "12+ anos", "14+ anos", "16+ anos", "18+ anos");
@@ -42,12 +38,12 @@ public class AddEditFilmeController {
             String nome = nomeFilme.getText();
             String genero = generoFilme.getText();
             if (nome.isEmpty() || genero.isEmpty()) {
-                errorMsg.setText("Nome e/ou genero faltando");
+                exibirErro("Campo não preenchido", "Informe o nome/genero do filme");
                 return;
             }
             int duracao = Integer.parseInt(duracaoFilme.getText());
             if (classificacaoSelect.getValue() == null) {
-                errorMsg.setText("Selecione a classificação");
+                exibirErro("Classificação não selecionada", "Selecione a classificação");
                 return;
             }
             int classificacao;
@@ -58,31 +54,65 @@ public class AddEditFilmeController {
                 default:
                     classificacao = Integer.parseInt(classificacaoSelect.getValue().substring(0, 2));
             }
+
+            boolean confirm = false;
+
             if (filmeSelecionado == null) {
                 if (!filmes.containsKey(nome)) {
-                    FilmeModel filme = new FilmeModel(nome, genero, duracao, classificacao);
-                    FilmeModel.addFilme(filme);
+                    confirm = exibirConfirmar("Adicionar", "Deseja adicionar esse filme?");
+                    if (confirm) {
+                        FilmeModel filme = new FilmeModel(nome, genero, duracao, classificacao);
+                        FilmeModel.addFilme(filme);
+                    }
                 } else {
-                    errorMsg.setText("Já existe um filme com esse nome");
+                    exibirErro("Filme já existente", "Já existe um filme com esse nome");
                 }
             } else {
-                filmeSelecionado.setGenero(genero);
-                filmeSelecionado.setDuracao(duracao);
-                filmeSelecionado.setFaixaEtaria(classificacao);
-                FilmeModel.editarFilme(filmeSelecionado);
-                filmeSelecionado = null;
+                confirm = exibirConfirmar("Salvar alterações", "Deseja salvar as mudanças?");
+                if (confirm) {
+                    filmeSelecionado.setGenero(genero);
+                    filmeSelecionado.setDuracao(duracao);
+                    filmeSelecionado.setFaixaEtaria(classificacao);
+                    FilmeModel.editarFilme(filmeSelecionado);
+                    filmeSelecionado = null;
+                }
             }
 
-            Parent root = null;
             try {
-                root = FXMLLoader.load(getClass().getResource("AdminTela.fxml"));
+                Scene scene = ((javafx.scene.Node) event.getSource()).getScene();
+                scene.setRoot(new FXMLLoader(getClass().getResource("AdminTela.fxml")).load());
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-            Scene scene = ((javafx.scene.Node) event.getSource()).getScene();
-            scene.setRoot(root);
         } catch (NumberFormatException ignored) {
-            errorMsg.setText("Duraçao inválida");
+
         }
+    }
+
+    private void exibirErro(String titulo, String mensagem) {
+        Alert alerta = new Alert(Alert.AlertType.ERROR);
+        alerta.setTitle(titulo);
+        alerta.setHeaderText(null);
+        alerta.setContentText(mensagem);
+        alerta.setHeight(70);
+        alerta.setWidth(120);
+        alerta.showAndWait();
+    }
+    private boolean exibirConfirmar(String titulo, String mensagem) {
+        Alert alerta = new Alert(Alert.AlertType.CONFIRMATION);
+        alerta.setTitle(titulo);
+        alerta.setHeaderText(null);
+        alerta.setContentText(mensagem);
+        alerta.setHeight(70);
+        alerta.setWidth(120);
+
+        ButtonType botaoConfirmar = new ButtonType("Sim");
+        ButtonType botaoCancelar = new ButtonType("Não");
+        alerta.getButtonTypes().setAll(botaoConfirmar, botaoCancelar);
+        AtomicBoolean result = new AtomicBoolean(false);
+        alerta.showAndWait().ifPresent(button -> {
+            result.set(button == botaoConfirmar);
+        });
+        return result.get();
     }
 }

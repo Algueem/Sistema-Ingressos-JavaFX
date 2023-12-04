@@ -8,6 +8,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -26,7 +27,6 @@ public class AddEditSessaoController {
     ChoiceBox<String> selectFilme, selectHora, selectMinuto, selectSala;
     @FXML
     TextField capacidadeInput, precoInput;
-    @FXML Label errorMsg;
 
     public void initialize() {
         selectFilme.getItems().addAll(filmes.keySet());
@@ -43,7 +43,7 @@ public class AddEditSessaoController {
     public void salvarSessao(ActionEvent event) {
         try {
             if (selectFilme.getValue() == null) {
-                errorMsg.setText("Selecione o filme!");
+                exibirErro("Filme inválido", "Selecione o filme");
                 return;
             }
             int hora = Integer.parseInt(selectHora.getValue().split(" ",0)[0]);
@@ -55,29 +55,23 @@ public class AddEditSessaoController {
                 SessaoModel sessao = new SessaoModel(-1, filme, hora, minuto, salaId, preco);
                 SessaoModel.addSessao(sessao);
             } else {
-                if (true) {// arrumar
-                    errorMsg.setText("Ja existe outra sessao desse filme nesse horario");
-                } else {
-                    sessaoSelecionada.setFilme(filmes.get(selectFilme.getValue()));
-                    sessaoSelecionada.setHora(hora);
-                    sessaoSelecionada.setMinuto(minuto);
-                    sessaoSelecionada.setSalaId(salaId);
-                    sessaoSelecionada.setPreco(preco);
-                    SessaoModel.editarSessao(sessaoSelecionada);
-                    sessaoSelecionada = null;
-                }
+                sessaoSelecionada.setFilme(filmes.get(selectFilme.getValue()));
+                sessaoSelecionada.setHora(hora);
+                sessaoSelecionada.setMinuto(minuto);
+                sessaoSelecionada.setSalaId(salaId);
+                sessaoSelecionada.setPreco(preco);
+                SessaoModel.editarSessao(sessaoSelecionada);
+                sessaoSelecionada = null;
             }
-            Parent root = null;
             try {
-                root = FXMLLoader.load(getClass().getResource("AdminTela.fxml"));
+                Scene scene = ((javafx.scene.Node) event.getSource()).getScene();
+                scene.setRoot(new FXMLLoader(getClass().getResource("AdminTela.fxml")).load());
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-            Scene scene = ((javafx.scene.Node) event.getSource()).getScene();
-            scene.setRoot(root);
 
         } catch (NumberFormatException ignored) {
-            errorMsg.setText("Preencha com numeros");
+            exibirErro("Valor inválido", "Digite um preço válidoo");
             //Thread.sleep(2000);
             //errorMsg.setText(" ");
         }
@@ -92,5 +86,15 @@ public class AddEditSessaoController {
         }
         selectHora.getItems().addAll(horas);
         selectMinuto.getItems().addAll(minutos);
+    }
+
+    private void exibirErro(String titulo, String mensagem) {
+        Alert alerta = new Alert(Alert.AlertType.ERROR);
+        alerta.setTitle(titulo);
+        alerta.setHeaderText(null);
+        alerta.setContentText(mensagem);
+        alerta.setHeight(70);
+        alerta.setWidth(120);
+        alerta.showAndWait();
     }
 }

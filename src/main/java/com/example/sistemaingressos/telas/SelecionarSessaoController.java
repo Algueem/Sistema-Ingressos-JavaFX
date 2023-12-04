@@ -21,20 +21,23 @@ import static com.example.sistemaingressos.models.SessaoModel.*;
 
 
 public class SelecionarSessaoController {
-    @FXML Label selectTeste; // tirar
-
     @FXML
     ChoiceBox<String> selectFiltro;
 
-    @FXML TextField barraPesquisa;
+    @FXML
+    TextField barraPesquisa;
 
-    @FXML TableView<SessaoModel> tabelaSessoes;
+    @FXML
+    TableView<SessaoModel> tabelaSessoes;
+
     @FXML
     TableColumn<SessaoModel, String> nomeTabelaSessoes, classificacaoTabelaSessoes, generoTabelaSessoes, horarioTabelaSessoes, precoTabelaSessoes;
 
     @FXML Label logadoNome;
 
     ObservableList<SessaoModel> sessoesLista = FXCollections.observableArrayList();
+
+    public static SessaoModel sessaoSelecionada;
     public void initialize() {
         String[] selectOpcoes = {"Nome", "Classificação", "Gênero"};
         selectFiltro.getItems().addAll(selectOpcoes);
@@ -45,7 +48,7 @@ public class SelecionarSessaoController {
 
         sessoesLista.addAll(sessoes);
         tabelaSessoes.setItems(sessoesLista);
-        nomeTabelaSessoes.setCellValueFactory(data -> data.getValue().get("nome"));
+        nomeTabelaSessoes.setCellValueFactory(data -> data.getValue().get("filme"));
         generoTabelaSessoes.setCellValueFactory(data -> data.getValue().get("genero"));
         classificacaoTabelaSessoes.setCellValueFactory(data -> data.getValue().get("classificacao"));
         horarioTabelaSessoes.setCellValueFactory(data -> data.getValue().get("horario"));
@@ -56,28 +59,34 @@ public class SelecionarSessaoController {
     }
     @FXML
     public void editarDadosCliente(ActionEvent event) {
-        Parent root = null;
         try {
-            root = FXMLLoader.load(getClass().getResource("DadosClienteTela.fxml"));
+            Scene scene = ((javafx.scene.Node) event.getSource()).getScene();
+            scene.setRoot(new FXMLLoader(getClass().getResource("DadosClienteTela.fxml")).load());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        Scene scene = ((javafx.scene.Node) event.getSource()).getScene();
-        scene.setRoot(root);
     }
 
     @FXML
     public void comprarIngressos(ActionEvent event) {
-        SessaoModel a = (SessaoModel) tabelaSessoes.getSelectionModel().getSelectedItem();
-        if (a != null) {
-            if (cliente.getIdade() < a.getFilme().getFaixaEtaria()) {
-                selectTeste.setText("Não podoe");
-            } else {
-                selectTeste.setText(a.getFilme().getNome());
+        sessaoSelecionada = tabelaSessoes.getSelectionModel().getSelectedItem();
+        if (sessaoSelecionada != null) {
+            if (cliente.getIdade() < sessaoSelecionada.getFilme().getFaixaEtaria()) {
+                exibirErro("Erro", "Você nãõ possui a idade mínima!\nEscolha outra sessão");
+                return;
+            }
+            try {
+                Scene scene = ((javafx.scene.Node) event.getSource()).getScene();
+                scene.setRoot(new FXMLLoader(getClass().getResource("SelectCadeira.fxml")).load());
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
         } else {
-            selectTeste.setText("Selecione primeiro");
+            exibirErro("Erro", "Selecione a sessão!");
         }
+
+
+
 
     }
 
@@ -114,6 +123,13 @@ public class SelecionarSessaoController {
                 break;
         }
     }
-
-
+    private void exibirErro(String titulo, String mensagem) {
+        Alert alerta = new Alert(Alert.AlertType.ERROR);
+        alerta.setTitle(titulo);
+        alerta.setHeaderText(null);
+        alerta.setContentText(mensagem);
+        alerta.setHeight(70);
+        alerta.setWidth(120);
+        alerta.showAndWait();
+    }
 }

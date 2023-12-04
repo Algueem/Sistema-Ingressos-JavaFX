@@ -7,7 +7,6 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="637.0" prefWidth="935.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.sistemaingressos.telas.AddEditFilmeController">
    <children>
       <Label layoutX="330.0" layoutY="57.0" text="Dados do Filme">
@@ -61,10 +60,5 @@
             <Font size="21.0" />
          </font>
       </Button>
-      <Label fx:id="errorMsg" layoutX="366.0" layoutY="548.0" prefHeight="51.0" prefWidth="394.0" text=" ">
-         <font>
-            <Font size="25.0" />
-         </font>
-      </Label>
    </children>
 </AnchorPane>

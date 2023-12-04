@@ -10,7 +10,7 @@ public class IngressoModel {
     private String filme;
     private double precoFinal;
 
-    public IngressoModel(int id, int cadeiraId, boolean cadeiraEspecial, int salaId, int sessaoId, int vendaId, String filme, double precoFinal) {
+    public IngressoModel(int id, String filme, int cadeiraId, boolean cadeiraEspecial, int salaId, int sessaoId, int vendaId, double precoFinal) {
         this.id = id;
         this.cadeiraId = cadeiraId;
         this.cadeiraEspecial = cadeiraEspecial;

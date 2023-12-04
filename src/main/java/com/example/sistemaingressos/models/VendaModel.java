@@ -1,22 +1,28 @@
 package com.example.sistemaingressos.models;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class VendaModel {
     private int id;
     private int qntIngressos;
-    private LocalDateTime data;
+    private LocalDate data;
     private String nomeComprador;
     private ArrayList<IngressoModel> ingressos;
 
-    public VendaModel(int id, int qntIngressos, LocalDateTime data, String nomeComprador, ArrayList<IngressoModel> ingressos) {
+    public VendaModel(int id, int qntIngressos, LocalDate data, String nomeComprador, ArrayList<IngressoModel> ingressos) {
         this.id = id;
         this.qntIngressos = qntIngressos;
         this.data = data;
         this.nomeComprador = nomeComprador;
         this.ingressos = ingressos;
+    }
+
+    public VendaModel(int id, int qntIngressos, LocalDate data, String nomeComprador) {
+        this.id = id;
+        this.qntIngressos = qntIngressos;
+        this.data = data;
+        this.nomeComprador = nomeComprador;
     }
 
     public void salvarIngressos() {
@@ -39,11 +45,11 @@ public class VendaModel {
         this.qntIngressos = qntIngressos;
     }
 
-    public LocalDateTime getData() {
+    public LocalDate getData() {
         return data;
     }
 
-    public void setData(LocalDateTime data) {
+    public void setData(LocalDate data) {
         this.data = data;
     }
 

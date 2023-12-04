@@ -33,14 +33,12 @@ public class DadosClienteController {
             cliente.setIdade(Integer.parseInt(idadeCliente.getText()));
             cliente.setEstudante(estudante.isSelected());
         }
-        Parent root = null;
         try {
-            root = FXMLLoader.load(getClass().getResource("ListaSessoesTela.fxml"));
+            Scene scene = ((javafx.scene.Node) event.getSource()).getScene();
+            scene.setRoot(new FXMLLoader(getClass().getResource("ListaSessoesTela.fxml")).load());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        Scene scene = ((javafx.scene.Node) event.getSource()).getScene();
-        scene.setRoot(root);
 
     }
 }

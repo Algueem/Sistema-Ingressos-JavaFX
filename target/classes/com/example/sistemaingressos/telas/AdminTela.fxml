@@ -13,10 +13,10 @@
       <Button fx:id="adicionarFilme" layoutX="42.0" layoutY="280.0" mnemonicParsing="false" onAction="#adicionarFilme" text="Adicionar Filme" />
       <Button fx:id="editarFilme" layoutX="155.0" layoutY="280.0" mnemonicParsing="false" onAction="#editarFilme" text="Editar Filme" />
       <Button fx:id="removerFilme" layoutX="247.0" layoutY="280.0" mnemonicParsing="false" onAction="#removerFilme" text="Remover Filme" />
-      <TableView fx:id="topVendasTabela" layoutX="702.0" layoutY="65.0" prefHeight="200.0" prefWidth="200.0">
+      <TableView fx:id="topVendasTabela" layoutX="696.0" layoutY="65.0" prefHeight="200.0" prefWidth="200.0">
         <columns>
-          <TableColumn prefWidth="75.0" text="#" />
-          <TableColumn prefWidth="123.199951171875" text="Filme" />
+          <TableColumn fx:id="quantidadeTopVendasTabela" prefWidth="84.800048828125" text="Quantidade" />
+          <TableColumn fx:id="nomeTopVendasTabela" prefWidth="113.5999755859375" text="Filme" />
         </columns>
       </TableView>
       <Label layoutX="702.0" layoutY="24.0" text="Filmes mais vendidos">
@@ -26,12 +26,12 @@
       </Label>
       <TableView fx:id="vendasTabela" layoutX="690.0" layoutY="379.0" prefHeight="244.0" prefWidth="224.0">
          <columns>
-            <TableColumn prefWidth="75.0" text="Filme" />
-            <TableColumn prefWidth="144.7999267578125" text="Vendas" />
+            <TableColumn prefWidth="126.4000244140625" text="Filme" />
+            <TableColumn prefWidth="94.4000244140625" text="Vendas" />
          </columns>
       </TableView>
       <Label layoutX="696.0" layoutY="349.0" text="Dia" />
-      <DatePicker layoutX="726.0" layoutY="345.0" />
+      <DatePicker fx:id="filtroData" layoutX="726.0" layoutY="345.0" onAction="#filtrarData" />
       <Button fx:id="adicionarSessao" layoutX="41.0" layoutY="575.0" mnemonicParsing="false" onAction="#adicionarSessao" text="Adicionar Sessão" />
       <TableView fx:id="tabelaFilmes" layoutX="43.0" layoutY="65.0" prefHeight="200.0" prefWidth="462.0">
         <columns>

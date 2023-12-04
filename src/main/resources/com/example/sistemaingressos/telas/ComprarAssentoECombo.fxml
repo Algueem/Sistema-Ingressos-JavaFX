@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="637.0" prefWidth="935.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.sistemaingressos.telas.ComprarIngressoController">
+   <children>
+      <ComboBox fx:id="selectConforto" layoutX="37.0" layoutY="143.0" prefWidth="182.0" promptText="Nenhum" />
+      <Label layoutX="37.0" layoutY="40.0" prefHeight="103.0" prefWidth="238.0" text="Selecione os assentos que devem possuir mais conforto:" wrapText="true">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <Label layoutX="37.0" layoutY="267.0" prefHeight="103.0" prefWidth="173.0" text="Selecione seu combo(opcional):" wrapText="true">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <RadioButton layoutX="37.0" layoutY="431.0" mnemonicParsing="false" prefHeight="93.0" prefWidth="205.0" text="Refri + Chocolate &#10;(10% OFF)" wrapText="true">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </RadioButton>
+      <RadioButton layoutX="275.0" layoutY="431.0" mnemonicParsing="false" prefHeight="93.0" prefWidth="192.0" text="Refri + Pipoca&#10;(15% OFF)" wrapText="true">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </RadioButton>
+      <RadioButton layoutX="492.0" layoutY="431.0" mnemonicParsing="false" prefHeight="93.0" prefWidth="285.0" text="Refri + Chocolate + Pipoca &#10;(20% OFF)" wrapText="true">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </RadioButton>
+      <Label layoutX="426.0" layoutY="40.0" prefHeight="36.0" prefWidth="258.0" text="Dados da Compra">
+         <font>
+            <Font size="25.0" />
+         </font>
+      </Label>
+      <VBox fx:id="dados" layoutX="426.0" layoutY="92.0" prefHeight="200.0" prefWidth="382.0">
+         <children>
+            <Label prefHeight="30.0" prefWidth="382.0" text="...">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Label prefHeight="22.0" prefWidth="383.0" text="...">
+               <font>
+                  <Font size="13.0" />
+               </font>
+            </Label>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

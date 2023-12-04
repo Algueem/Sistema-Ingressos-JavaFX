@@ -1,6 +1,7 @@
 package com.example.sistemaingressos;
 
 import com.example.sistemaingressos.models.FilmeModel;
+import com.example.sistemaingressos.models.SalaModel;
 import com.example.sistemaingressos.models.SessaoModel;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -13,6 +14,7 @@ import java.sql.SQLException;
 public class MainApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException, SQLException {
+        SalaModel.carregarSalas();
         FilmeModel.carregarFilmes();
         SessaoModel.carregarSessoes();
         FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("MainTela.fxml"));
