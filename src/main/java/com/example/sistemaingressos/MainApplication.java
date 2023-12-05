@@ -1,8 +1,10 @@
 package com.example.sistemaingressos;
 
+import com.example.sistemaingressos.database.VendaDAO;
 import com.example.sistemaingressos.models.FilmeModel;
 import com.example.sistemaingressos.models.SalaModel;
 import com.example.sistemaingressos.models.SessaoModel;
+import com.example.sistemaingressos.models.VendaModel;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -10,6 +12,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.time.LocalDate;
 
 public class MainApplication extends Application {
     @Override

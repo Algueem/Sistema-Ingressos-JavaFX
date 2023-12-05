@@ -50,7 +50,6 @@ public class SessaoDAO {
 
     public static void editarSessao(SessaoModel novaSessao){
         try {
-            System.out.println("update " + novaSessao.getId());
             String sql = "UPDATE sessoes SET filme = ?, hora = ?, minuto = ?, sala_id = ?, preco = ? WHERE id = ? ";
 
             Connection con = Conexao.getConexao();

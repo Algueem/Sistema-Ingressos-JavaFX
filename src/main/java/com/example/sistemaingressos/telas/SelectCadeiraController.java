@@ -1,5 +1,7 @@
 package com.example.sistemaingressos.telas;
 
+import com.example.sistemaingressos.database.IngressoDAO;
+import com.example.sistemaingressos.models.IngressoModel;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -24,11 +26,12 @@ public class SelectCadeiraController {
 
     public void initialize() {
         int qnt_cadeiras = salas.get(sessaoSelecionada.getSalaId()).getQntMaxPessoas(), qnt_cadeiras_por_fila = 10;
-        // qnt_cadeiras_disponiveis = ;
+        ArrayList<Integer> cadeirasOcupadas = IngressoDAO.buscarCadeirasOcupadas(sessaoSelecionada.getId());
         for (int i = 0; i < qnt_cadeiras; i++) {
             Button cadeira = new Button();
-            // if cadeira ocupada
-            //cadeira.setDisable(true);
+            if (cadeirasOcupadas.contains(i+1)) {
+                cadeira.setDisable(true);
+            }
             cadeira.setMinSize(78, 60);
             cadeira.setText(String.valueOf(i+1));
             cadeira.getStyleClass().add("cadeira");
@@ -54,6 +57,10 @@ public class SelectCadeiraController {
     @FXML
     public void salvarCadeiras(ActionEvent event) {
         try {
+            if (cadeirasSelecionadas.size() < 1) {
+                exibirErro("Erro", "Selecione pelo menos uma cadeira!");
+                return;
+            }
             Scene scene = ((javafx.scene.Node) event.getSource()).getScene();
             scene.setRoot(new FXMLLoader(getClass().getResource("ComprarAssentoECombo.fxml")).load());
         } catch (IOException e) {

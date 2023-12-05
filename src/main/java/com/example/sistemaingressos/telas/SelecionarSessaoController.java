@@ -1,5 +1,6 @@
 package com.example.sistemaingressos.telas;
 
+import com.example.sistemaingressos.database.IngressoDAO;
 import com.example.sistemaingressos.models.SessaoModel;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
@@ -15,6 +16,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import java.io.IOException;
 import java.sql.SQLException;
 
+import static com.example.sistemaingressos.models.SalaModel.salas;
 import static com.example.sistemaingressos.telas.DadosClienteController.*;
 import static com.example.sistemaingressos.models.SessaoModel.*;
 
@@ -72,7 +74,12 @@ public class SelecionarSessaoController {
         sessaoSelecionada = tabelaSessoes.getSelectionModel().getSelectedItem();
         if (sessaoSelecionada != null) {
             if (cliente.getIdade() < sessaoSelecionada.getFilme().getFaixaEtaria()) {
-                exibirErro("Erro", "Você nãõ possui a idade mínima!\nEscolha outra sessão");
+                exibirErro("Erro", "Você não possui a idade mínima!\nEscolha outra sessão");
+                return;
+            }
+            if (IngressoDAO.buscarCadeirasOcupadas(sessaoSelecionada.getId()).size() >=
+                    salas.get(sessaoSelecionada.getSalaId()).getQntMaxPessoas()) {
+                exibirErro("Sessão cheia", "Estão esgotadas as cadeiras para essa sessão, tente outra");
                 return;
             }
             try {

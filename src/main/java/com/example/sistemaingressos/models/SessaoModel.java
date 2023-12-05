@@ -104,7 +104,7 @@ public class SessaoModel {
         return switch (attr) {
             case "filme" -> this.filme.getNome();
             case "genero" -> this.filme.getGenero();
-            case "classificacao" -> this.filme.getFaixaEtaria() + "+ anos";
+            case "classificacao" -> this.filme.getFaixaEtaria() != 0 ? this.filme.getFaixaEtaria() + "+ anos" : "Livre";
             case "horario" -> this.hora + "h" + this.minuto + "min";
             case "preco" -> this.preco + " R$";
             default -> "";

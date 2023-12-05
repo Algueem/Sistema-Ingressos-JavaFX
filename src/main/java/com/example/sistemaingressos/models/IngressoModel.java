@@ -20,6 +20,15 @@ public class IngressoModel {
         this.filme = filme;
         this.precoFinal = precoFinal;
     }
+    public IngressoModel(String filme, int cadeiraId, boolean cadeiraEspecial, int salaId, int sessaoId, int vendaId, double precoFinal) {
+        this.cadeiraId = cadeiraId;
+        this.cadeiraEspecial = cadeiraEspecial;
+        this.salaId = salaId;
+        this.sessaoId = sessaoId;
+        this.vendaId = vendaId;
+        this.filme = filme;
+        this.precoFinal = precoFinal;
+    }
 
     public int getId() {
         return id;

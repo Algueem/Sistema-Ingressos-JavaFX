@@ -1,5 +1,8 @@
 package com.example.sistemaingressos.models;
 
+import com.example.sistemaingressos.database.IngressoDAO;
+import com.example.sistemaingressos.database.VendaDAO;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 
@@ -8,25 +11,30 @@ public class VendaModel {
     private int qntIngressos;
     private LocalDate data;
     private String nomeComprador;
+    private double precoTotal;
     private ArrayList<IngressoModel> ingressos;
 
-    public VendaModel(int id, int qntIngressos, LocalDate data, String nomeComprador, ArrayList<IngressoModel> ingressos) {
+    public VendaModel(int id, int qntIngressos, LocalDate data, String nomeComprador, double precoTotal) {
         this.id = id;
         this.qntIngressos = qntIngressos;
         this.data = data;
         this.nomeComprador = nomeComprador;
-        this.ingressos = ingressos;
+        this.precoTotal = precoTotal;
     }
 
-    public VendaModel(int id, int qntIngressos, LocalDate data, String nomeComprador) {
-        this.id = id;
+    public VendaModel(int qntIngressos, LocalDate data, String nomeComprador, double precoTotal) {
         this.qntIngressos = qntIngressos;
         this.data = data;
         this.nomeComprador = nomeComprador;
+        this.precoTotal = precoTotal;
     }
-
+    public static int addVenda(VendaModel venda) {
+        return VendaDAO.addVenda(venda);
+    }
     public void salvarIngressos() {
-
+        for (IngressoModel ingresso: ingressos) {
+            IngressoDAO.addIngresso(ingresso);
+        }
     }
 
     public int getId() {
@@ -59,5 +67,21 @@ public class VendaModel {
 
     public void setNomeComprador(String nomeComprador) {
         this.nomeComprador = nomeComprador;
+    }
+
+    public double getPrecoTotal() {
+        return precoTotal;
+    }
+
+    public void setPrecoTotal(double precoTotal) {
+        this.precoTotal = precoTotal;
+    }
+
+    public ArrayList<IngressoModel> getIngressos() {
+        return ingressos;
+    }
+
+    public void setIngressos(ArrayList<IngressoModel> ingressos) {
+        this.ingressos = ingressos;
     }
 }

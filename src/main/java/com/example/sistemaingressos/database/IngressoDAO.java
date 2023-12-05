@@ -8,39 +8,26 @@ import java.util.ArrayList;
 
 public class IngressoDAO {
 
-    public static ArrayList<IngressoModel> buscarCadeirasOcupadas(int sessaoId) {
+    public static ArrayList<Integer> buscarCadeirasOcupadas(int sessaoId) {
+        ArrayList<Integer> cadeiras = new ArrayList<>();
         try {
             String sql = "SELECT * FROM ingressos WHERE sessao_id = ? ";
 
             Connection con = Conexao.getConexao();
             PreparedStatement ps = con.prepareStatement(sql);
-
+            ps.setInt(1, sessaoId);
             ResultSet result = ps.executeQuery();
 
-            ps.setInt(1, sessaoId);
-
-            ArrayList<IngressoModel> ingressos = new ArrayList<>();
 
             while (result.next()) {
-                int id = result.getInt("id");
-                String filme = result.getString("filme");
-                int sessao_id = result.getInt("sessao_id");
-                int sala_id = result.getInt("sala_id");
                 int cadeira_id = result.getInt("cadeira_id");
-                boolean cadeira_especial = result.getBoolean("cadeira_especial");
-                int venda_id = result.getInt("venda_id");
-                double preco_final = result.getDouble("preco_final");
-
-                IngressoModel ingresso = new IngressoModel(id, filme, cadeira_id, cadeira_especial, sala_id, sessao_id, venda_id, preco_final);
-                ingressos.add(ingresso);
+                cadeiras.add(cadeira_id);
             }
             ps.close();
-            con.close();
-            return ingressos;
         } catch (SQLException ignored) {
 
         }
-        return null;
+        return cadeiras;
     }
 
     public static ArrayList<FilmeVendido> buscarFilmeMaisVendidos() {
@@ -63,7 +50,6 @@ public class IngressoDAO {
                 vendas.add(filme);
             }
             ps.close();
-            con.close();
             return vendas;
         } catch (SQLException ignored) {
             return vendas;
@@ -72,7 +58,8 @@ public class IngressoDAO {
 
     public static void addIngresso(IngressoModel novoIngresso) {
         try {
-            String sql = "Insert into ingressos values(?,?,?,?,?,?,?)";
+            String sql = "INSERT INTO ingressos (filme, sessao_id, sala_id, cadeira_id, cadeira_especial," +
+                    " venda_id, preco_final) values(?,?,?,?,?,?,?)";
 
             Connection con = Conexao.getConexao();
             PreparedStatement ps = con.prepareStatement(sql);
@@ -88,7 +75,6 @@ public class IngressoDAO {
 
             ps.executeUpdate();
             ps.close();
-            con.close();
         } catch (SQLException ignored) {
 
         }

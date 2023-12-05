@@ -1,6 +1,9 @@
 package com.example.sistemaingressos.models;
 
 import com.example.sistemaingressos.database.SalaDAO;
+import javafx.beans.property.ReadOnlyIntegerWrapper;
+import javafx.beans.property.ReadOnlyStringWrapper;
+import javafx.beans.property.SimpleIntegerProperty;
 
 import java.util.HashMap;
 
@@ -44,5 +47,18 @@ public class SalaModel {
 
     public void setQntMaxPessoas(int qntMaxPessoas) {
         this.qntMaxPessoas = qntMaxPessoas;
+    }
+
+    public ReadOnlyStringWrapper get(String attr) {
+        String str = getStr(attr);
+        return new ReadOnlyStringWrapper(str);
+    }
+
+    public String getStr(String attr) {
+        return switch (attr) {
+            case "id" -> String.valueOf(this.id);
+            case "qnt" -> String.valueOf(this.qntMaxPessoas);
+            default -> "Editar";
+        };
     }
 }

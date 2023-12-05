@@ -48,7 +48,7 @@ public class FilmeDAO {
 
     public static void editarFilme(FilmeModel novoFilme){
         try {
-            String sql = "UPDATE filmes SET genero = ?, duracao = ?, faixa_etaria = ? where nome = ? ";
+            String sql = "UPDATE filmes SET genero = ?, duracao = ?, faixa_etaria = ? WHERE nome = ? ";
 
             Connection con = Conexao.getConexao();
             PreparedStatement ps = con.prepareStatement(sql);
